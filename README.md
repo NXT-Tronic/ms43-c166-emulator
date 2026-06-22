@@ -34,6 +34,10 @@ and **`0xF620–0xFDFE`** — i.e. it writes those regions at every startup, *be
 connects. (Useful to know when picking "free" RAM for a live-tuning overlay: such a region is safe
 for a *post-boot-armed* table, but a watchdog/soft reset re-runs the test.)
 
+`EmuRamMap` then maps the *complete* boot write footprint and, cross-referenced with the boot's
+`ADDRSEL`/`BUSCON` external-memory windows, isolates regions boot never touches — i.e. candidate
+*reset-robust* locations for a live-tune table.
+
 ## Requirements
 
 - **Ghidra 12.1.x** (developed on 12.1.2)
@@ -72,6 +76,7 @@ javac -proc:none -cp "$(find $GH/Ghidra -name '*.jar' | tr '\n' ';')" -d /tmp Em
 | script | purpose |
 |---|---|
 | `EmuBootF.java` | **the emulator** — live-DPP CALLOTHER callbacks, boot trace, write logging into a target window |
+| `EmuRamMap.java` | full boot RAM-write map — runs boot with `enableMemoryWriteTracking` and reports every written range + the unwritten gaps (free-RAM candidates) |
 | `RamMap.java`   | static reference map of RAM ranges (fast first pass; DPP-limited) |
 | `XrefProbe.java` / `XrefDeep.java` | list references into an address range (with seeding/flow) |
 | `DumpAt.java`   | targeted disassembly dump at an address |
