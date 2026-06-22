@@ -1,0 +1,24 @@
+# NEVER commit firmware / calibration (proprietary)
+*.bin
+*.hex
+*.HEX
+*.a2l
+*.A2L
+*.xdf
+*.ols
+*.adx
+*.s19
+*.kp
+
+# Ghidra projects
+*.rep/
+*.gpr
+*.lock
+
+# build / OS
+_cc/
+*.class
+Thumbs.db
+.DS_Store
+.vscode/
+*.swp
